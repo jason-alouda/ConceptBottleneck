@@ -656,6 +656,7 @@ class ModelXtoYWithAuxC(InterventionModelOnC, ModelXtoCY):
         # latent fc layer
         C_fc_size = self.fc_layers[int(self.C_fc_name[2:]) - 1]
         latent_size = C_fc_size - len(self.C_cols)
+        assert latent_size > 0
         self.fc_latent = nn.Linear(latent_size, latent_size)
 
         self.build()
