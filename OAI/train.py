@@ -499,7 +499,6 @@ def generate_configs(args):
             'lr': 0.0005
         },
         'optimizer_name': 'adam',
-        'latent_reg': None,
         'pretrained_path': None,
         'pretrained_model_name': 'resnet18',
         'scheduler_kwargs': {
