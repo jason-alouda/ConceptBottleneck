@@ -377,6 +377,8 @@ def hyperparameter_optimization(args, dataset_kwargs, model_kwargs):
         model_class = ModelXtoCtoY
     elif args.hyperopt_model == 'X_to_Chat__Chat_to_y':
         model_class = ModelXtoC
+    elif args.hyperopt_model == 'X_to_Y_with_Aux_C':
+        model_class = ModelXtoYWithAuxC
 
     # ---- Generate candidate parameters ----
     candidate_parameters = []
@@ -458,7 +460,11 @@ def get_results_name(experiment_name):
 
 def generate_configs(args):
 
-    concepts_to_use = args.C_cols
+    if args.C_cols == "incomplete":
+        concepts_to_use = CONCEPTS_INCOMPLETE
+    else: 
+        concepts_to_use = args.C_cols
+
     N_concepts = len(concepts_to_use)
     dataset_kwargs = {
         'batch_size': args.batch_size,
@@ -774,7 +780,7 @@ def parse_arguments(experiment):
 
     # ---- Hyperparameter optimization ----
     parser.add_argument('--hyperopt_model', type=str, choices=['X_to_y', 'X_to_Cy', 'X_to_C_to_y',
-                                                               'X_to_Chat__Chat_to_y'],
+                                                               'X_to_Chat__Chat_to_y', 'X_to_Y_with_Aux_C'],
                         help='Model to hyperparameter optimize.')
     parser.add_argument('--hyperopt_params', type=str, help='String representing a parameter dictionary that will be'
                         'used for the search. Will be parsed by json library.'
