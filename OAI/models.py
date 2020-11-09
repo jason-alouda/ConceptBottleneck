@@ -455,8 +455,8 @@ class ModelXtoY(PretrainedResNetModel):
         return metrics_all
 
 class ModelXtoCY(PretrainedResNetModel):
-    def __init__(self, cfg):
-        super().__init__(cfg)
+    def __init__(self, cfg, build=True):
+        super().__init__(cfg, build=build)
         self.C_cols = cfg['C_cols']
         self.y_cols = cfg['y_cols']
 
@@ -651,7 +651,7 @@ class ModelXtoCY(PretrainedResNetModel):
 class ModelXtoYWithAuxC(InterventionModelOnC, ModelXtoCY):
     def __init__(self, cfg):
         InterventionModelOnC.__init__(self, cfg)
-        ModelXtoCY.__init__(self, cfg)
+        ModelXtoCY.__init__(self, cfg, build=False)
 
         # latent fc layer
         C_fc_size = self.fc_layers[int(self.C_fc_name[2:]) - 1]
