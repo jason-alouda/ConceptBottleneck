@@ -246,7 +246,7 @@ def test_time_intervention(args, dataset_kwargs, model_kwargs):
 
     PHASE = args.test_time_intervention_split
     np.random.seed(0)
-    N_CONCEPTS_TO_GIVE_LIST = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    N_CONCEPTS_TO_GIVE_LIST = list(range(len(model_kwargs['C_cols'])))
 
     # ---- Dataset ----
     limit = 500 if args.use_small_subset else CACHE_LIMIT

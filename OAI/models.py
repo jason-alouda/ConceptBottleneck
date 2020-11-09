@@ -749,7 +749,12 @@ class ModelXtoYWithAuxC(InterventionModelOnC, ModelXtoCY):
 
                 x_concepts = x[:, :N_concepts]
                 x_latent = self.relu(x[:, N_concepts:])
-                x = torch.cat([x_concepts, x_latent], dim=1)
+
+                # regularized latent fc
+                x_latent_reg = self.relu(self.fc_latent(x_latent))  
+                
+                x = torch.cat([x_concepts, x_latent_reg], dim=1)
+                
                 outputs['C'] = x_concepts
                 continue
             elif fc_name == self.y_fc_name:
