@@ -3,7 +3,7 @@ import os
 
 MODEL_NAME = 'resnet18'
 N_DATALOADER_WORKERS = 2
-CACHE_LIMIT = 1e8
+CACHE_LIMIT = 500
 EST_TIME_PER_EXP = 4
 BASE_DIR = ''
 DATA_DIR = '/juice/scr/oai/'
