@@ -455,8 +455,8 @@ class ModelXtoY(PretrainedResNetModel):
         return metrics_all
 
 class ModelXtoCY(PretrainedResNetModel):
-    def __init__(self, cfg):
-        super().__init__(cfg)
+    def __init__(self, cfg, build=True):
+        super().__init__(cfg, build=build)
         self.C_cols = cfg['C_cols']
         self.y_cols = cfg['y_cols']
 
@@ -651,7 +651,7 @@ class ModelXtoCY(PretrainedResNetModel):
 class ModelXtoYWithAuxC(InterventionModelOnC, ModelXtoCY):
     def __init__(self, cfg):
         InterventionModelOnC.__init__(self, cfg)
-        ModelXtoCY.__init__(self, cfg)
+        ModelXtoCY.__init__(self, cfg, build=False)
 
         # latent fc layer
         C_fc_size = self.fc_layers[int(self.C_fc_name[2:]) - 1]
@@ -749,7 +749,12 @@ class ModelXtoYWithAuxC(InterventionModelOnC, ModelXtoCY):
 
                 x_concepts = x[:, :N_concepts]
                 x_latent = self.relu(x[:, N_concepts:])
-                x = torch.cat([x_concepts, x_latent], dim=1)
+
+                # regularized latent fc
+                x_latent_reg = self.relu(self.fc_latent(x_latent))  
+                
+                x = torch.cat([x_concepts, x_latent_reg], dim=1)
+                
                 outputs['C'] = x_concepts
                 continue
             elif fc_name == self.y_fc_name:
