@@ -475,9 +475,9 @@ class PretrainedResNetModel(DeepLearningModel):
                     to_unfreeze = True
 
             if to_unfreeze:
-                print("Param %s is UNFROZEN" % name, param.data.shape)
+                if self.verbose['param_freeze']: print("Param %s is UNFROZEN" % name, param.data.shape)
             else:
-                print("Param %s is FROZEN" % name, param.data.shape)
+                if self.verbose['param_freeze']: print("Param %s is FROZEN" % name, param.data.shape)
                 param.requires_grad = False
 
 

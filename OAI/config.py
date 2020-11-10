@@ -3,7 +3,7 @@ import os
 
 MODEL_NAME = 'resnet18'
 N_DATALOADER_WORKERS = 2
-CACHE_LIMIT = 500
+CACHE_LIMIT = 2000
 EST_TIME_PER_EXP = 4
 BASE_DIR = ''
 DATA_DIR = '/juice/scr/oai/'
@@ -23,7 +23,8 @@ CONCEPTS_WO_KLG = ['xrosfm', 'xrscfm', 'xrcyfm', 'xrjsm', 'xrchm', 'xrostm', 'xr
                    'xrosfl', 'xrscfl', 'xrcyfl', 'xrjsl', 'xrchl', 'xrostl', 'xrsctl', 'xrcytl', 'xrattl']
 CONCEPTS_UNBALANCED = ['xrcyfm', 'xrchm', 'xrcytm', 'xrattm', 'xrcyfl', 'xrchl', 'xrcytl', 'xrattl']
 CONCEPTS_BALANCED = ['xrosfm', 'xrscfm', 'xrjsm', 'xrostm', 'xrsctm', 'xrosfl', 'xrscfl', 'xrjsl', 'xrostl', 'xrsctl']
-CONCEPTS_INCOMPLETE = ['xrosfm', 'xrscfm', 'xrjsm', 'xrosfl', 'xrscfl', 'xrjsl'] # no tibia
+CONCEPTS_NOTIBIA = ['xrosfm', 'xrscfm', 'xrjsm', 'xrosfl', 'xrscfl', 'xrjsl'] # no tibia
+CONCEPTS_NOSCLEROSIS = ['xrosfm', 'xrjsm', 'xrostm', 'xrosfl', 'xrjsl', 'xrostl']
 
 # Mu and sigma for A and y of train dataset
 TRANSFORM_STATISTICS_TRAIN = {

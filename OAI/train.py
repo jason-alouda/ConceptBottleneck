@@ -17,7 +17,8 @@ from torch.utils.data import DataLoader
 
 # Global dependencies
 from OAI.config import Y_COLS, CONCEPTS_WO_KLG, CONCEPTS_BALANCED, CLASSES_PER_COLUMN, OUTPUTS_DIR, BASE_DIR, \
-    EST_TIME_PER_EXP, N_DATALOADER_WORKERS, CACHE_LIMIT, TRANSFORM_STATISTICS_TRAIN, CONCEPTS_INCOMPLETE
+    EST_TIME_PER_EXP, N_DATALOADER_WORKERS, CACHE_LIMIT, TRANSFORM_STATISTICS_TRAIN, CONCEPTS_BALANCED, \
+    CONCEPTS_NOSCLEROSIS, CONCEPTS_NOTIBIA
 
 # Models and dataset
 from OAI.models import ModelXtoC, ModelXtoC_SENN, ModelOracleCtoY, ModelXtoChat_ChatToY, ModelXtoCtoY, ModelXtoY, \
@@ -460,8 +461,12 @@ def get_results_name(experiment_name):
 
 def generate_configs(args):
 
-    if args.C_cols == ['incomplete']:
-        concepts_to_use = CONCEPTS_INCOMPLETE
+    if args.C_cols == ['full']:
+        concepts_to_use = CONCEPTS_BALANCED
+    elif args.C_cols == ['tibia']:
+        concepts_to_use = CONCEPTS_NOTIBIA
+    elif args.C_cols == ['sclerosis']:
+        concepts_to_use = CONCEPTS_NOSCLEROSIS
     else: 
         concepts_to_use = args.C_cols
 
@@ -512,9 +517,10 @@ def generate_configs(args):
             'lr_scheduler_type': None,
         },
         'verbose': {
-            'time_100batches': True,
+            'time_100batches': False,
             'time_breakdown': False,
             'layer_magnitudes': False,
+            'param_freeze': False
         }
     }
 
