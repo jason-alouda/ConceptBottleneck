@@ -23,7 +23,7 @@ CONCEPTS_WO_KLG = ['xrosfm', 'xrscfm', 'xrcyfm', 'xrjsm', 'xrchm', 'xrostm', 'xr
                    'xrosfl', 'xrscfl', 'xrcyfl', 'xrjsl', 'xrchl', 'xrostl', 'xrsctl', 'xrcytl', 'xrattl']
 CONCEPTS_UNBALANCED = ['xrcyfm', 'xrchm', 'xrcytm', 'xrattm', 'xrcyfl', 'xrchl', 'xrcytl', 'xrattl']
 CONCEPTS_BALANCED = ['xrosfm', 'xrscfm', 'xrjsm', 'xrostm', 'xrsctm', 'xrosfl', 'xrscfl', 'xrjsl', 'xrostl', 'xrsctl']
-CONCEPTS_INCOMPLETE = ['xrosfm', 'xrjsm', 'xrostm', 'xrosfl', 'xrjsl', 'xrostl']
+CONCEPTS_INCOMPLETE = ['xrosfm', 'xrscfm', 'xrjsm', 'xrosfl', 'xrscfl', 'xrjsl'] # no tibia
 
 # Mu and sigma for A and y of train dataset
 TRANSFORM_STATISTICS_TRAIN = {
