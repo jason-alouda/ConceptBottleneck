@@ -131,8 +131,8 @@ class DeepLearningModel(nn.Module):
 
                 for name in self.vars_to_part_freeze:
                     pt_width = self.vars_to_part_freeze[name]
-                    param = self.named_parameters()[name]
-                    param.grad[:pt_width] = 0
+                    param = [param for n, param in self.named_parameters() if n == name][0]
+                    if param.grad is not None: param.grad[:pt_width] = 0
 
                 self.optimizer.step()
                 time_update_step += time.time() - t
