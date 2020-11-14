@@ -679,6 +679,7 @@ def generate_configs(args):
     model_kwargs['num_epochs'] = args.num_epochs
     model_kwargs['pretrained_paths'] = args.pretrained
     model_kwargs['pretrained_path'] = args.pretrained[0] if args.pretrained else None # Assumes there is only one model provided
+    model_kwargs['pretrained_widen_ok'] = args.pretrained_widen_ok
     model_kwargs['pretrained_exclude_vars'] = args.pretrained_exclude_vars
     model_kwargs['conv_layers_before_end_to_unfreeze'] = args.conv_layers_before_end_to_unfreeze
     model_kwargs['prefixes_of_vars_to_freeze'] = args.prefixes_of_vars_to_freeze
@@ -690,6 +691,7 @@ def generate_configs(args):
     model_kwargs['dropout'] = args.dropout
     model_kwargs['C_loss_type'] = args.C_loss_type
     model_kwargs['y_loss_type'] = args.y_loss_type
+    model_kwargs['verbose']['param_freeze'] = args.p_param_freeze
 
     return dataset_kwargs, model_kwargs
 
@@ -711,6 +713,7 @@ def parse_arguments(experiment):
     parser.add_argument('--data_proportion', type=float, default=1., help='Proportion of data to use.')
     parser.add_argument('--shuffle_Cs', action='store_true', help='Shuffle the training set C values for each A.')
     parser.add_argument('--silent', action='store_true', default=True, help='Whether to be silent in logging or not.')
+    parser.add_argument('--p_param_freeze', action='store_true', default=False, help='Whether to print param frozen state.')
 
     # ---- Evaluation ----
     parser.add_argument('--eval_split', type=str, choices=['train', 'val', 'test'],
@@ -727,6 +730,8 @@ def parse_arguments(experiment):
 
     # ---- Loading of Pretrained Models ----
     parser.add_argument('--pretrained', type=str, nargs='+', default=None, help='Pretrained model path.')
+    parser.add_argument('--pretrained_widen_ok', action='store_true', default=False, \
+                        help='Ok to load pretrained layers that are more narrow than model.')
     parser.add_argument('--pretrained_exclude_vars', default=[], type=str, nargs='+',
                         help='List of variables to exclude loading.')
     parser.add_argument('--conv_layers_before_end_to_unfreeze', type=int, default=12,

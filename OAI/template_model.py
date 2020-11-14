@@ -286,6 +286,7 @@ class PretrainedResNetModel(DeepLearningModel):
         self.dropout = cfg['dropout']
         self.fc_layers = cfg['fc_layers']
         self.pretrained_path = cfg['pretrained_path']
+        self.pretrained_widen = cfg['pretrained_widen_ok']
         self.pretrained_model_name = cfg['pretrained_model_name']
         self.pretrained_exclude_vars = cfg['pretrained_exclude_vars']
         self.conv_layers_before_end_to_unfreeze = cfg['conv_layers_before_end_to_unfreeze']
@@ -406,7 +407,24 @@ class PretrainedResNetModel(DeepLearningModel):
 
     def load_pretrained(self):
         # Our own trained model
-        if self.pretrained_path and len(self.pretrained_exclude_vars) > 0:
+        if self.pretrained_path and self.pretrained_widen:
+            print('[C] Loading our own pretrained model')
+            own_state = self.state_dict()
+            pretrained_state = torch.load(self.pretrained_path)
+            for name, param in pretrained_state.items():
+                if isinstance(param, torch.nn.Parameter):
+                    # backwards compatibility for serialized parameters
+                    param = param.data
+                if own_state[name].shape[0] != param.shape[0]:
+                    # assuming only first dim mismatch
+                    print('  Partially loading %s' % name)
+                    pt_width = param.shape[0]
+                    own_state[name][:pt_width].copy_(param)                
+                else:
+                    print('  Loading %s' % name)
+                    own_state[name].copy_(param)
+            return
+        elif self.pretrained_path and len(self.pretrained_exclude_vars) > 0:
             print('[A] Loading our own pretrained model')
             own_state = self.state_dict()
             pretrained_state = torch.load(self.pretrained_path)
