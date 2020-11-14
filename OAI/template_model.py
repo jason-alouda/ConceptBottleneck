@@ -421,12 +421,12 @@ class PretrainedResNetModel(DeepLearningModel):
                 if isinstance(param, torch.nn.Parameter):
                     # backwards compatibility for serialized parameters
                     param = param.data
-                if own_state[name].shape[0] != param.shape[0]:
+                if own_state[name].shape != param.shape:
                     # assuming only first dim mismatch
                     print('  Partially loading %s' % name)
                     pt_width = param.shape[0]
                     own_state[name][:pt_width].copy_(param)
-                    self.vars_to_part_freeze[names] = pt_width              
+                    self.vars_to_part_freeze[name] = pt_width              
                 else:
                     print('  Loading %s' % name)
                     own_state[name].copy_(param)
