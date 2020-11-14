@@ -25,6 +25,7 @@ class DeepLearningModel(nn.Module):
         self.prefixes_of_vars_to_freeze = cfg['prefixes_of_vars_to_freeze']
 
         self.layer_magnitudes = {}
+        self.vars_to_part_freeze = {} # name -> width to freeze
 
     # ----------------- Abstract class methods to be implemented per model -----------------
     def forward(self, X):
@@ -127,6 +128,11 @@ class DeepLearningModel(nn.Module):
                 loss.backward()
                 time_backward_prop += time.time() - t
                 t = time.time()
+
+                for name in self.vars_to_part_freeze:
+                    pt_width = self.vars_to_part_freeze[name]
+                    param = self.named_parameters()[name]
+                    param.grad[:pt_width] = 0
 
                 self.optimizer.step()
                 time_update_step += time.time() - t
@@ -419,7 +425,8 @@ class PretrainedResNetModel(DeepLearningModel):
                     # assuming only first dim mismatch
                     print('  Partially loading %s' % name)
                     pt_width = param.shape[0]
-                    own_state[name][:pt_width].copy_(param)                
+                    own_state[name][:pt_width].copy_(param)
+                    self.vars_to_part_freeze[names] = pt_width              
                 else:
                     print('  Loading %s' % name)
                     own_state[name].copy_(param)
